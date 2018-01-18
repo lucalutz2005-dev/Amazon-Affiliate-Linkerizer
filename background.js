@@ -1,19 +1,22 @@
-// analytics
+// open options page on install
+function handleInstalled() {
+	browser.runtime.openOptionsPage();
+}
+browser.runtime.onInstalled.addListener(handleInstalled);
+
+
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
 browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-	if (changeInfo.status === 'complete') {
-		//Show the link icon for any page we currently support
-		var url = tab.url;
-		if (url.match(regexAmzn)) {
-			browser.pageAction.show(tabId);
-		}
+	//Show the link icon for only Amazon pages
+	var url = tab.url;
+	if (url.match(regexAmzn)) {
+		browser.pageAction.show(tabId);
 	}
 });
 
 browser.pageAction.onClicked.addListener(function (tab) {
-	// put shortlink on clipboard
 	var code = localStorage['amzn_code'] || 'jimmysweetblog-20';
-	//	//TODO: change this according to country
+	// build shortlink and put on clipboard
 	copyToClipboard('https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : ''));
 
 
@@ -32,11 +35,9 @@ browser.pageAction.onClicked.addListener(function (tab) {
 
 });
 
+
 // http://stackoverflow.com/questions/1764605/scrape-asin-from-amazon-url-using-javascript
 // http://en.wikipedia.org/wiki/Amazon_Standard_Identification_Number
-// Country = 2
-// ASIN = 7
-// Affiliate = 9
 function getAMZN(url, target) {
 	var regexProduct = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/?.*\/(exec\/obidos\/tg\/detail\/-|gp\/product|o\/ASIN|dp|dp\/product|exec\/obidos\/asin)\/(\w{10}).*$/);
 
@@ -60,9 +61,6 @@ function getAMZN(url, target) {
 		}
 	}
 }
-
-
-//System functions follow
 
 function copyToClipboard(str) {
 	var temp = document.getElementById('temp');

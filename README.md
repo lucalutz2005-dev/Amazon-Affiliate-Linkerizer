@@ -7,3 +7,4 @@
 * [Forked](https://github.com/bxio/Amazon-Affiliate-Chrome-Extension) and cleaned up/removed a lot of extra code.
 * Works now for the Amazon homepage
 * Converted to work with Firefox/web-extensions
+* Better styled options page
