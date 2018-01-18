@@ -1,17 +1,22 @@
 <html>
-	<head>
-		<title>BX Amazon Chrome Extension Options</title>
 
-		<script src="options.js"></script>
-	</head>
+<head>
+	<script src="options.js"></script>
+</head>
 
-	<body>
-		Your Amazon Affiliate code:<input type="text" id="amzncode"><br>
-    Your NCIX Affiliate code:<input type="text" id="ncixcode"><br>
-    Your Newegg Affiliate code:<input type="text" id="neweggcode"><br>
-		<div id="status"></div>
-		<button id="save">Save</button>
-    <p />
-    Sign up for Amazon Associates <a href='http://associates.amazon.com'>here</a>
-	</body>
+<body>
+	<form>
+	<p>
+			<label>
+				Amazon Affiliate ID
+				<input id="amzncode">
+			</label>
+		</p>
+	<p>
+	<input type="submit" value="Save" width="200">
+	</p>
+	</form>
+	<div id="status"></div>
+</body>
+
 </html>
