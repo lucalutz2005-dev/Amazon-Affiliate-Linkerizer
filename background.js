@@ -63,6 +63,10 @@ function getAMZN(url, target) {
 }
 
 function copyToClipboard(str) {
+	document.addEventListener('copy', function (e) {
+		e.clipboardData.setData('text/plain', str);
+		e.preventDefault(); // We want our data, not data from any selection, to be written to the clipboard
+	});
 	var temp = document.getElementById('temp');
 	temp.value = str;
 	temp.select();
