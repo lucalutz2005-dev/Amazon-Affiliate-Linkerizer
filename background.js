@@ -1,9 +1,12 @@
 // analytics
-
+var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
 browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	if (changeInfo.status === 'complete') {
 		//Show the link icon for any page we currently support
-		browser.pageAction.show(tabId);
+		var url = tab.url;
+		if (url.match(regexAmzn)) {
+			browser.pageAction.show(tabId);
+		}
 	}
 });
 
@@ -12,8 +15,8 @@ browser.pageAction.onClicked.addListener(function (tab) {
 	var code = localStorage['amzn_code'] || 'jimmysweetblog-20';
 	//	//TODO: change this according to country
 	copyToClipboard('https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : ''));
-	
-	
+
+
 	// change page action icon
 	browser.pageAction.setIcon({
 		tabId: tab.id,
@@ -36,10 +39,9 @@ browser.pageAction.onClicked.addListener(function (tab) {
 // Affiliate = 9
 function getAMZN(url, target) {
 	var regexProduct = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/?.*\/(exec\/obidos\/tg\/detail\/-|gp\/product|o\/ASIN|dp|dp\/product|exec\/obidos\/asin)\/(\w{10}).*$/);
-	var regexHome = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
 
 	p = url.match(regexProduct);
-	h = url.match(regexHome);
+	h = url.match(regexAmzn);
 	if (p) {
 		if (target == 'PRODUCT') {
 			return '/dp/' + p[5];
@@ -48,8 +50,7 @@ function getAMZN(url, target) {
 		} else if (target == 'PREFIX') {
 			return p[2];
 		}
-	} 
-	else if(h) {
+	} else if (h) {
 		if (target == 'COUNTRY') {
 			return h[3];
 		} else if (target == 'PREFIX') {
