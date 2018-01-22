@@ -1,8 +1,11 @@
 # Amazon Affiliate Linkerizer
-### A firefox extension that shortens and shrinks Amazon links and adds your affiliate code.
+### A Firefox and Chrome extension that shortens and shrinks Amazon links and adds your affiliate code.
 
 ## Install for Firefox:
 [https://addons.mozilla.org/en-US/firefox/addon/amazon-affiliate-linkerizer/](https://addons.mozilla.org/en-US/firefox/addon/amazon-affiliate-linkerizer/)
+
+## Install for Chrome:
+[https://chrome.google.com/webstore/detail/amazon-affiliate-linkeriz/ienfbnlpkangilghbiipkfiibnfgfnad](https://chrome.google.com/webstore/detail/amazon-affiliate-linkeriz/ienfbnlpkangilghbiipkfiibnfgfnad)
 
 ## Changelog
 
