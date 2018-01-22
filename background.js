@@ -1,33 +1,33 @@
 // open options page on install
 function handleInstalled() {
-	browser.runtime.openOptionsPage();
+	chrome.runtime.openOptionsPage();
 }
-browser.runtime.onInstalled.addListener(handleInstalled);
+chrome.runtime.onInstalled.addListener(handleInstalled);
 
 
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
-browser.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	//Show the link icon for only Amazon pages
 	var url = tab.url;
 	if (url.match(regexAmzn)) {
-		browser.pageAction.show(tabId);
+		chrome.pageAction.show(tabId);
 	}
 });
 
-browser.pageAction.onClicked.addListener(function (tab) {
+chrome.pageAction.onClicked.addListener(function (tab) {
 	var code = localStorage['amzn_code'] || 'jimmysweetblog-20';
 	// build shortlink and put on clipboard
 	copyToClipboard('https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : ''));
 
 
 	// change page action icon
-	browser.pageAction.setIcon({
+	chrome.pageAction.setIcon({
 		tabId: tab.id,
 		path: '/images/link_clicked.png'
 	});
 	// change the icon back after a delay
 	setTimeout(function () {
-		browser.pageAction.setIcon({
+		chrome.pageAction.setIcon({
 			tabId: tab.id,
 			path: '/images/icon64.png'
 		})
@@ -63,10 +63,6 @@ function getAMZN(url, target) {
 }
 
 function copyToClipboard(str) {
-	document.addEventListener('copy', function (e) {
-		e.clipboardData.setData('text/plain', str);
-		e.preventDefault(); // We want our data, not data from any selection, to be written to the clipboard
-	});
 	var temp = document.getElementById('temp');
 	temp.value = str;
 	temp.select();

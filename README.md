@@ -6,8 +6,13 @@
 
 ## Changelog
 
+### 18.1.22
+* Minor update to copy function
+* Works with Chrome now as well
+* Removed button from options page
+
 ### 18.1.18
 * [Forked](https://github.com/bxio/Amazon-Affiliate-Chrome-Extension) and cleaned up/removed a lot of extra code.
 * Works now for the Amazon homepage
-* Converted to work with Firefox/web-extensions
+* Converted to work better with Firefox/web-extensions
 * Better styled options page
