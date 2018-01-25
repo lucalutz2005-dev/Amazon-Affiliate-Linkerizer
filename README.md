@@ -9,6 +9,9 @@
 
 ## Changelog
 
+### 18.1.25
+* Updates address bar link to shortened link
+
 ### 18.1.22
 * Minor update to copy function
 * Works with Chrome now as well

@@ -17,8 +17,12 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 chrome.pageAction.onClicked.addListener(function (tab) {
 	var code = localStorage['amzn_code'] || 'jimmysweetblog-20';
 	// build shortlink and put on clipboard
-	copyToClipboard('https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : ''));
+	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : '');
+	copyToClipboard(goodLink);
 
+	chrome.tabs.update({
+		url: goodLink
+	});
 
 	// change page action icon
 	chrome.pageAction.setIcon({
