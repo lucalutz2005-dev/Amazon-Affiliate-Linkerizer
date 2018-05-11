@@ -9,6 +9,10 @@
 
 ## Changelog
 
+### 18.5.11
+* Update to work with search results pages
+* Uses synced storages instead of local
+
 ### 18.1.25
 * Updates address bar link to shortened link
 

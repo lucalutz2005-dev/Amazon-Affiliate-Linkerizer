@@ -1,11 +1,10 @@
-// open options page on install
-function handleInstalled() {
-	chrome.runtime.openOptionsPage();
-}
-chrome.runtime.onInstalled.addListener(handleInstalled);
+//// open options page on install
+
 
 
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
+var code = "jimmysweetblog-20";
+
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	//Show the link icon for only Amazon pages
 	var url = tab.url;
@@ -14,16 +13,22 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	}
 });
 
-chrome.pageAction.onClicked.addListener(function (tab) {
-	var code = localStorage['amzn_code'] || 'jimmysweetblog-20';
-	// build shortlink and put on clipboard
-	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '/?tag=' + code : '');
-	copyToClipboard(goodLink);
+function theThings(doIt) {
+	console.log(doIt.amzncode);
+	code = doIt.amzncode;
+}
 
+
+chrome.pageAction.onClicked.addListener(function (tab) {
+	chrome.storage.sync.get(theThings);
+
+	// build shortlink 
+	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '?tag=' + code : '');
+
+	copyToClipboard(goodLink);
 	chrome.tabs.update({
 		url: goodLink
 	});
-
 	// change page action icon
 	chrome.pageAction.setIcon({
 		tabId: tab.id,
@@ -44,9 +49,11 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 // http://en.wikipedia.org/wiki/Amazon_Standard_Identification_Number
 function getAMZN(url, target) {
 	var regexProduct = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/?.*\/(exec\/obidos\/tg\/detail\/-|gp\/product|o\/ASIN|dp|dp\/product|exec\/obidos\/asin)\/(\w{10}).*$/);
+	var regexSearch = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/s\/(ref=.*).*%3D(.+)&field-keywords=([^&]*)(?:&.*)?$/);
 
 	p = url.match(regexProduct);
 	h = url.match(regexAmzn);
+	s = url.match(regexSearch);
 	if (p) {
 		if (target == 'PRODUCT') {
 			return '/dp/' + p[5];
@@ -55,6 +62,15 @@ function getAMZN(url, target) {
 		} else if (target == 'PREFIX') {
 			return p[2];
 		}
+	} else if (s) {
+		if (target == 'PRODUCT') {
+			return "/s/?url=search-alias%3D" + s[5] + "&field-keywords=" + s[6] + "&";
+		} else if (target == 'PREFIX') {
+			return s[2];
+		} else if (target == 'COUNTRY') {
+			return s[3];
+		}
+
 	} else if (h) {
 		if (target == 'COUNTRY') {
 			return h[3];
@@ -65,6 +81,7 @@ function getAMZN(url, target) {
 		}
 	}
 }
+
 
 function copyToClipboard(str) {
 	var temp = document.getElementById('temp');
