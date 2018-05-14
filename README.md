@@ -9,6 +9,10 @@
 
 ## Changelog
 
+### 18.5.14
+* Remove save button
+* Pull saved code from storage more often
+
 ### 18.5.11
 * Update to work with search results pages
 * Uses synced storages instead of local

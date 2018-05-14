@@ -11,6 +11,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	if (url.match(regexAmzn)) {
 		chrome.pageAction.show(tabId);
 	}
+	chrome.storage.sync.get(theThings);
 });
 
 function theThings(doIt) {
