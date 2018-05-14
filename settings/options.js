@@ -8,7 +8,7 @@ function saveOptions() {
 function restoreOptions() {
 
 	function setCurrentChoice(result) {
-		document.querySelector("#amzncode").value = result.amzncode;
+		document.querySelector("#amzncode").value = result.amzncode || "jimmysweetblog-20";
 	}
 
 	function onError(error) {
