@@ -3,8 +3,7 @@
 
 
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
-var code = "jimmysweetblog-20";
-
+var code;
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	//Show the link icon for only Amazon pages
 	var url = tab.url;
@@ -16,7 +15,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
 function theThings(doIt) {
 	console.log(doIt.amzncode);
-	code = doIt.amzncode;
+	code = doIt.amzncode || "jimmysweetblog-20";
 }
 
 
