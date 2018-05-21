@@ -1,7 +1,3 @@
-//// open options page on install
-
-
-
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
 var code;
 var prsvTitle;
