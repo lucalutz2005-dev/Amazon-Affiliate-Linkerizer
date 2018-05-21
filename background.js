@@ -15,7 +15,6 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 });
 
 function theThings(doIt) {
-	console.log(doIt.amzncode);
 	code = doIt.amzncode || "jimmysweetblog-20";
 	prsvTitle = doIt.prsvTitle;
 }
@@ -60,10 +59,9 @@ function getAMZN(url, target) {
 		if (target == 'PRODUCT') {
 			return '/dp/' + p[6];
 		} else if (target == 'TITLE') {
-			if (prsvTitle) {
+			if (prsvTitle && p[4] !== undefined) {
 				return p[4];
-			}
-			else {
+			} else {
 				return '';
 			}
 		} else if (target == 'COUNTRY') {
@@ -78,6 +76,8 @@ function getAMZN(url, target) {
 			return s[2];
 		} else if (target == 'COUNTRY') {
 			return s[3];
+		} else {
+			return '';
 		}
 
 	} else if (h) {
@@ -85,7 +85,7 @@ function getAMZN(url, target) {
 			return h[3];
 		} else if (target == 'PREFIX') {
 			return h[2];
-		} else if (target == 'PRODUCT') {
+		} else {
 			return '';
 		}
 	}
