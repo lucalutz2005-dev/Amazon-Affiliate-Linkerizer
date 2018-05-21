@@ -9,6 +9,9 @@
 
 ## Changelog
 
+### 18.5.21
+* Merge in and tweak pull request from [@czoller](https://github.com/czoller) for option to preserve product titles in resulting URL
+
 ### 18.5.14
 * Remove save button
 * Pull saved code from storage more often
