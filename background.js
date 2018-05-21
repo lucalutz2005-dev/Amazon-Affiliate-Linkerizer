@@ -4,6 +4,7 @@
 
 var regexAmzn = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+).*$/);
 var code;
+var prsvTitle;
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	//Show the link icon for only Amazon pages
 	var url = tab.url;
@@ -16,6 +17,7 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 function theThings(doIt) {
 	console.log(doIt.amzncode);
 	code = doIt.amzncode || "jimmysweetblog-20";
+	prsvTitle = doIt.prsvTitle;
 }
 
 
@@ -23,7 +25,7 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 	chrome.storage.sync.get(theThings);
 
 	// build shortlink 
-	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'PRODUCT') + (code ? '?tag=' + code : '');
+	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'TITLE') + getAMZN(tab.url, 'PRODUCT') + (code ? '?tag=' + code : '');
 
 	copyToClipboard(goodLink);
 	chrome.tabs.update({
@@ -48,7 +50,7 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 // http://stackoverflow.com/questions/1764605/scrape-asin-from-amazon-url-using-javascript
 // http://en.wikipedia.org/wiki/Amazon_Standard_Identification_Number
 function getAMZN(url, target) {
-	var regexProduct = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/?.*\/(exec\/obidos\/tg\/detail\/-|gp\/product|o\/ASIN|dp|dp\/product|exec\/obidos\/asin)\/(\w{10}).*$/);
+	var regexProduct = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)(\/.+)?\/(exec\/obidos\/tg\/detail\/-|gp\/product|o\/ASIN|dp|dp\/product|exec\/obidos\/asin)\/(\w{10}).*$/);
 	var regexSearch = new RegExp(/^(https?:\/\/)?([\da-z\.-]+)\.amazon\.([\da-z\.-]+)\/s\/(ref=.*).*%3D(.+)&field-keywords=([^&]*)(?:&.*)?$/);
 
 	p = url.match(regexProduct);
@@ -56,7 +58,14 @@ function getAMZN(url, target) {
 	s = url.match(regexSearch);
 	if (p) {
 		if (target == 'PRODUCT') {
-			return '/dp/' + p[5];
+			return '/dp/' + p[6];
+		} else if (target == 'TITLE') {
+			if (prsvTitle) {
+				return p[4];
+			}
+			else {
+				return '';
+			}
 		} else if (target == 'COUNTRY') {
 			return p[3];
 		} else if (target == 'PREFIX') {
