@@ -20,7 +20,7 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 	chrome.storage.sync.get(theThings);
 
 	// build shortlink 
-	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'TITLE') + getAMZN(tab.url, 'PRODUCT') + (code ? '?tag=' + code : '');
+	var goodLink = 'https://' + getAMZN(tab.url, 'PREFIX') + '.amazon.' + getAMZN(tab.url, 'COUNTRY') + getAMZN(tab.url, 'TITLE') + getAMZN(tab.url, 'PRODUCT');
 
 	copyToClipboard(goodLink);
 	chrome.tabs.update({
